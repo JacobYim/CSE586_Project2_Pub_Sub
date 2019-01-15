@@ -1,0 +1,127 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <title>pubsub2</title>
+    <meta http-equiv ="Content-Type" content = "text/html; charset=UTF-8">
+    <meta name = "viewprot" content = "width = device-width, initial-scale =1" >
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" media="screen">
+
+    <style>
+        #pub-sub { 
+            background-color: navajowhite;
+            color : black;
+        }
+        .rounded {
+            border-radius: 2rem!important; 
+        }
+        ul {
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class = container>
+        <h2> Publishers </h2>
+        <div class="textbox-btn">
+            <button class="btn btn-default"><a href ="/regpub">Add Publisher</a></button>
+        </div>
+        <br>
+        <div class="row marketing">
+            <div id = "publisher-list">
+                {% for pub in pubs%}
+                    <div class = "container rounded" id = "pub-sub">
+                        <div id = "publisher">
+                            <h3>{{pub.name}}</h3>
+                            <div class = "row col-md-12">
+                                <form class="form-horizontal" method="post" action="/Advertise">
+                                    <input type="text" class="form-control" placeholder="Please type the topic to add" name = "newTopic">
+                                    <input type="text" class="sr-only" name = "name" value = {{pub.name}} readonly>
+                                    <button class="btn btn-default pull-right">advertise</button>
+                                </form>
+                            </div>
+                            <br>
+
+                            <div class = "row col-md-12">
+                                <form class="form-horizontal" method="post" action="/Publish">
+                                    <textarea class="form-control" placeholder="Please type the message to publish" name = "message"></textarea>
+                                    <input type="text" class="sr-only" name = "name" value = {{pub.name}} readonly>
+                                    <button class="btn btn-default pull-right">publish</button>
+                                </form>
+                            </div>
+
+                            <!-- Display topic -->
+                            <div class="row col-lg-6">
+                                <h4>Topic : </h4>
+
+                                    {% for topic in pub.topic%}
+                                        <ul>{{topic}}</ul>
+                                    {% endfor %}
+                                
+                                <!-- Display send message -->
+                            <h4>Sended Message : </h4>
+                                <ul>
+                                    {% for mess in pub.mess%}
+                                        <ul>Topic : {{mess.topic}}, &nbsp &nbsp &nbsp &nbsp      Message : {{mess.mess}}</ul>
+                                    {% endfor %}
+                                </ul>
+                            </div>        
+                        </div>
+                    </div>
+                    <br>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+        
+    <div class = container>
+        <h2> Subscribers </h2>
+        <div id= "class="textbox-btn>
+            <button class="btn btn-default"><a href ="/regsub">Add Subscriber</a></button>          
+        </div>
+        <br>
+        <div class="row marketing">
+            <div id = "subscriber-list">
+                {% for sub in subs%}
+                <div class = "container rounded" id = "pub-sub">
+                    <div id = "subscriber">
+                        <h3>{{sub.name}}</h3>
+                        <div class = "row col-md-12">
+                            <form class="form-horizontal" method="post" action="/Subscribe">
+                                <input type="text" class="form-control" placeholder="Topic" name = "newTopic">
+                                <input type="text" class="form-control sr-only" name = "name" value = {{sub.name}} readonly>
+                                <button class="btn btn-default pull-right">subscribe</button>
+                            </form>
+                        </div>
+                        <br>
+
+                        <!-- Display topic -->
+                        <div class="row col-lg-6">
+                            <h4>Topic : </h4>
+
+                                {% for topic in sub.topic%}
+                                    <ul>{{topic}}</ul>
+                                {% endfor %}
+                            
+                        <!-- Display send message -->
+                        <h4>Recieved Message : </h4>
+                            <ul>
+                                {% for mess in sub.mess%}
+                                <ul>Topic : {{mess.topic}}, &nbsp &nbsp &nbsp &nbsp      Message : {{mess.mess}}</ul>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                {% endfor %}
+            </div>
+        </div>
+        <br>
+    </div>
+</body>
+<footer>
+    <div class ="container">
+    <p><b>&copy; Junghwan Yim & Sangwoo Kim</b></p>
+    </div>
+</footer>
+</html>
